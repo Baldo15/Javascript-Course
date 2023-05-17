@@ -83,15 +83,82 @@
 // Ejercicio 5
 
 // Ejercicio 6
+// Función para el clickListener del botón loginSuccess
+function handleLoginSuccess() {
+    // Crear objeto login correcto
+    let login = {
+        username: "admin",
+        password: "passwd"
+    };
 
-// let loginWitUsername = (username, password) => {
-//     return new Promise(function (resolve, rejected) {
-//       setTimeout(() => {
-//         if (username === "admin" && password === "passwd") {
-//           resolve("User logged in");
-//         } else {
-//           rejected("Error: invalid username or password");
-//         }
-//       }, 200);
-//     });
-// };
+    // Llamar a la función para que falle y se devuelve el resultado de la promesa
+    loginWitUsername(login.username, login.password).then(function (value) {
+        console.log("Promesa cumplida:", value);
+    }).catch(function (error) {
+        console.log("Promesa rechazada:", error);
+    });
+}
+
+// Función para el clickListener del botón loginFailure
+function handleLoginFailure() {
+    // Crear objeto login con parámetros incorrectos
+    let login = {
+        username: "baldo",
+        password: "123456"
+    };
+
+    // Llamar a la función para que falle y se devuelve el resultado de la promesa
+    loginWitUsername(login.username, login.password).then(function (value) {
+        console.log("Promesa cumplida:", value);
+    }).catch(function (error) {
+        console.log("Promesa rechazada:", error);
+    });
+}
+
+// Obtener los elementos de los botones por su ID
+let successButton = document.getElementById("loginSuccess");
+let failureButton = document.getElementById("loginFailure");
+let SuccessAsyncButton = document.getElementById("loginSuccessAsync");
+let FailureAsyncButton = document.getElementById("loginFailureAsync");
+
+// Añadir clickListeners a los botones
+successButton.addEventListener("click", handleLoginSuccess);
+failureButton.addEventListener("click", handleLoginFailure);
+
+
+// Crear el clickListener asíncrono para el botón loginSuccessAsync
+SuccessAsyncButton.addEventListener("click", async function() {
+    try {
+        // Llamar a la función asincrónica loginWithUsername para el resultado correcto
+        var result = await loginWitUsername("admin", "passwd");
+        console.log(result); // Resultado exitoso
+    } catch (error) {
+        console.log(error); // Manejo de errores
+    }
+});
+
+FailureAsyncButton.addEventListener("click", async function() {
+    try {
+        // Llamar a la función asincrónica loginWithUsername con parámetros incorrectos
+        var result = await loginWitUsername("baldo", "123456");
+        console.log(result); // Resultado exitoso
+    } catch (error) {
+        console.log(error); // Manejo de errores
+    }
+});
+
+FailureAsyncButton.addEventListener("click", handleLoginFailure);
+
+let loginWitUsername = (username, password) => {
+
+    return new Promise(function (resolve, rejected) {
+        setTimeout(() => {
+
+            if (username === "admin" && password === "passwd") {
+                resolve("User logged in");
+            } else {
+                rejected("Error: invalid username or password");
+            }
+        }, 1);
+    });
+};
